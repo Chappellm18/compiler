@@ -1,0 +1,10 @@
+public class Token {
+	public String Type;
+	public String Value;
+
+	public Token() { }
+	public Token(String type, String value) {
+		this.Type = type;
+		this.Value = value;
+	}
+}
