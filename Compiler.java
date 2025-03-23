@@ -40,6 +40,13 @@ public class Compiler {
 			if(currentChar == '(') {
 				Tokens.add(new Token("paren","("));		
 				currentIndex++;
+				int tempIndex = currentIndex;
+				while(input.charAt(tempIndex) != ')') {
+					if(tempIndex + 1 > input.length()) {
+						throw new Exception("No ending )");
+					}
+					tempIndex++;
+				}
 				continue;
 			
 			}
@@ -90,6 +97,12 @@ public class Compiler {
 		}
 		return Tokens;
 	}
+
+	private static void TokenParser(ArrayList<Token> p_tokens) {
+		
+	}
+
+	// Helpers
 
 	private static void print(String value) {
 		System.out.println(value);

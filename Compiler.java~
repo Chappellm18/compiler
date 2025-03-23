@@ -10,7 +10,7 @@ import java.io.IOException;
 public class Compiler {
 	
 	// Define the accepted chars
-	public static final String LETTERS = "abc";
+	public static final String LETTERS = "abcdefghijklmnopqrstuvwxyz";
 	public static final String WHITESPACE = " ";
 	
 	public static void main(String []args) throws Exception {
