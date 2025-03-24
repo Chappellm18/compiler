@@ -14,20 +14,22 @@ public class Compiler {
 	public static final String WHITESPACE = " ";
 	
 	public static void main(String []args) throws Exception {
-		System.out.println("Starting up");
+		//print("Starting up");
 		ArrayList<Token> FileTokens = new ArrayList<Token>();
 		String testFile = "testFile.mp";
 		
 		try (BufferedReader reader = new BufferedReader(new FileReader(testFile))) {
 			String line;
 		        while ((line = reader.readLine()) != null) {
-				System.out.println(line);
+				
 				ArrayList<Token> temp = Tokenizer(line);
 				temp.forEach(item -> FileTokens.add(item));
 			}
-	       	} catch (IOException e) {							                                       e.printStackTrace();								                        }
+	       	} catch (IOException e) {
+			e.printStackTrace();								                        	    
+		}
 		
-		FileTokens.forEach(item -> System.out.println("Type: " + item.Type + "Value: " + item.Value));		
+		TokenParser(FileTokens);		
 	}
 
 	public static ArrayList<Token> Tokenizer(String input) throws Exception {
@@ -57,10 +59,11 @@ public class Compiler {
 			}
 
 			if(currentChar == '"') {
-				print("entering string");
+				
 				Token temp = new Token();
 				currentIndex++;
 				currentChar = input.charAt(currentIndex);
+				temp.Value = "";
 				while(currentChar != '"') {
 					print("" + currentChar);
 					temp.Value += String.valueOf(currentChar);
@@ -80,6 +83,7 @@ public class Compiler {
 
 			if(LETTERS.contains(String.valueOf(currentChar))) {
 				Token temp = new Token();
+				temp.Value = "";
 				while(LETTERS.contains(String.valueOf(currentChar))) {
 					temp.Value += String.valueOf(currentChar);
 					currentChar = input.charAt(++currentIndex);
@@ -98,8 +102,40 @@ public class Compiler {
 		return Tokens;
 	}
 
-	private static void TokenParser(ArrayList<Token> p_tokens) {
-		
+	private static void TokenParser(ArrayList<Token> Tokens) {
+		int currentIndex = 0;
+		while(currentIndex < Tokens.size()) {
+			String type = Tokens.get(currentIndex).Type;
+			String value = Tokens.get(currentIndex).Value;
+			print("Parsing: " + type + " " + value);
+			if(type == "name") {
+				print("here? " + value.trim());
+				if(value.trim() == "out") {
+					print("name -> out");
+					currentIndex++;
+					if(Tokens.get(currentIndex).Type == "equal") {
+						print("name -> out -> equal");
+						currentIndex++;
+						if(Tokens.get(currentIndex).Type == "string") {
+							print("Here: " + Tokens.get(currentIndex).Value);
+						} else {
+							currentIndex++;
+							continue;
+						}
+					} else {
+						currentIndex++;
+						continue;
+					}
+				} else {
+					currentIndex++;
+					continue;
+				}
+			} else {
+				print("name != " + type);
+				currentIndex++;
+				continue;
+			}
+		}
 	}
 
 	// Helpers

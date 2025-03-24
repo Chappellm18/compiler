@@ -1,2 +1,2 @@
-output = "Hello there is this MP"
+out = "Hello there is this MP"
 
